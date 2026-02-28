@@ -1,18 +1,7 @@
 import { createContext, type ReactNode, useState, useEffect, useCallback } from 'react';
-import { apiClient } from '@/shared/api/client';
+import { authService, type User, type LoginCredentials } from '../api/auth.service';
 
-interface User {
-  id: string;
-  email: string;
-  role: string;
-}
-
-interface LoginCredentials {
-  email: string;
-  password?: string;
-}
-
-interface AuthContextValue {
+export type AuthContextValue = {
   user: User | null;
   isLoading: boolean;
   hasAdmin: boolean | null;
@@ -21,7 +10,7 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
   checkRegistrationStatus: () => Promise<void>;
-}
+};
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -32,8 +21,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkRegistrationStatus = useCallback(async () => {
     try {
-      const { data } = await apiClient.get('/auth/registration-status');
-      setHasAdmin(data.hasAdmin);
+      const data = await authService.checkRegistrationStatus();
+      setHasAdmin(!data.isRegistrationOpen);
     } catch (error) {
       console.error('Failed to check registration status', error);
     }
@@ -47,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
         return;
       }
-      const { data } = await apiClient.post('/auth/refresh', { refreshToken });
+      const data = await authService.refresh(refreshToken);
       (window as any)._accessToken = data.accessToken;
       if (data.refreshToken) {
         localStorage.setItem('refreshToken', data.refreshToken);
@@ -64,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [checkRegistrationStatus]);
 
   const login = async (credentials: LoginCredentials) => {
-    const { data } = await apiClient.post('/auth/login', credentials);
+    const data = await authService.login(credentials);
     (window as any)._accessToken = data.accessToken;
     if (data.refreshToken) {
       localStorage.setItem('refreshToken', data.refreshToken);
@@ -73,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (credentials: LoginCredentials) => {
-    await apiClient.post('/auth/register', credentials);
+    await authService.register(credentials);
     // After registration, we might want to auto-login or redirect to login
     // Given the task, the user created becomes OWNER, so we can login them directly if API supports it
     // But our API /register currently only returns user without tokens.
@@ -83,7 +72,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await apiClient.post('/auth/logout');
+      const refreshToken = localStorage.getItem('refreshToken');
+      await authService.logout(refreshToken);
     } finally {
       setUser(null);
       (window as any)._accessToken = null;

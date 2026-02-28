@@ -1,0 +1,38 @@
+{
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Enter your email and password to access the smart home",
+      "email_label": "Email",
+      "email_placeholder": "name@example.com",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "error_failed": "Failed to sign in. Please check your credentials."
+    },
+    "register": {
+      "title": "Create Administrator",
+      "subtitle": "No users in the system. Create the first user with the OWNER role.",
+      "email_label": "Email",
+      "email_placeholder": "admin@example.com",
+      "password_label": "Password",
+      "confirm_password_label": "Confirm Password",
+      "password_placeholder": "••••••••",
+      "submit": "Create Administrator",
+      "submitting": "Creating...",
+      "error_mismatch": "Passwords do not match",
+      "error_failed": "Failed to create administrator."
+    }
+  },
+  "common": {
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "devices": "Devices",
+    "automations": "Automations",
+    "settings": "Settings"
+  }
+}

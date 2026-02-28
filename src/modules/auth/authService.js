@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import ms from 'ms';
 import { env } from '../../config/env.js';
 import { query } from '../../db/db.js';
 
@@ -55,7 +56,38 @@ export const login = async (email, password) => {
 
   const { accessToken, refreshToken } = generateTokens(user.id, user.role);
 
+  await saveRefreshToken(user.id, refreshToken);
+
   return { user, accessToken, refreshToken };
+};
+
+/**
+ * @param {string} userId
+ * @param {string} token
+ */
+export const saveRefreshToken = async (userId, token) => {
+  const expiresAt = new Date(Date.now() + ms(env.JWT_REFRESH_EXPIRES_IN));
+  
+  await query(
+    'INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+    [userId, token, expiresAt]
+  );
+};
+
+/**
+ * @param {string} token
+ */
+export const revokeRefreshToken = async (token) => {
+  await query('DELETE FROM refresh_tokens WHERE token = $1', [token]);
+};
+
+/**
+ * Deletes all expired refresh tokens from the database.
+ * @returns {Promise<number>}
+ */
+export const cleanupExpiredTokens = async () => {
+  const result = await query('DELETE FROM refresh_tokens WHERE expires_at < NOW()');
+  return result.rowCount || 0;
 };
 
 /**
@@ -87,7 +119,30 @@ export const refreshTokens = async (refreshToken) => {
   try {
     /** @type {any} */
     const decoded = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET);
-    return generateTokens(decoded.userId, decoded.role);
+    
+    // Check if token exists in DB
+    const result = await query(
+      'SELECT * FROM refresh_tokens WHERE token = $1 AND user_id = $2',
+      [refreshToken, decoded.userId]
+    );
+    
+    if (result.rowCount === 0) {
+      return null;
+    }
+
+    // Optionally check expiration date from DB too, though JWT verify already did it
+    if (new Date(result.rows[0].expires_at) < new Date()) {
+      await revokeRefreshToken(refreshToken);
+      return null;
+    }
+
+    const newTokens = generateTokens(decoded.userId, decoded.role);
+    
+    // Replace old token with new one (rotation)
+    await revokeRefreshToken(refreshToken);
+    await saveRefreshToken(decoded.userId, newTokens.refreshToken);
+
+    return newTokens;
   } catch (err) {
     return null;
   }

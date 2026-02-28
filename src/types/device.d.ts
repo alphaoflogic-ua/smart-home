@@ -1,6 +1,6 @@
 export type DeviceStatus = 'online' | 'offline';
 
-export interface Device {
+export type Device = {
   id: string;
   home_id: string;
   room_id: string;
@@ -10,10 +10,10 @@ export interface Device {
   status: DeviceStatus;
   created_at: Date;
   updated_at: Date;
-}
+};
 
-export interface DeviceStateUpdate {
+export type DeviceStateUpdate = {
   device_id: string;
   state: Record<string, any>;
   timestamp: Date;
-}
+};

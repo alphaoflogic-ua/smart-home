@@ -8,13 +8,13 @@ const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export interface ModalProps {
+export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
   className?: string;
-}
+};
 
 export const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
   return (
