@@ -1,0 +1,46 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production
+/dist
+
+# Misc
+/tmp
+/out-tsc
+
+# Logs
+/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+/uploads
+/nginx/certs
+/mosquitto/data
+/mosquitto/log
+mosquitto/config/password_file
+
+# Certificates and keys
+*.pem
+*.crt
+*.key
+*.pfx
+*.p12
