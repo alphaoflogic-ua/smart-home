@@ -1,10 +1,13 @@
 import { AuthProvider } from '@/features/auth/model/AuthContext';
 import { Router } from '@/router/Router';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 export const App = () => {
   return (
-    <AuthProvider>
-      <Router />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </ThemeProvider>
   );
 };

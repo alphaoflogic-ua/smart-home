@@ -42,8 +42,8 @@ export const CreateAdminForm = () => {
     <Card className="w-full max-w-md p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold">Создание администратора</h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl font-bold text-text-primary">Создание администратора</h1>
+          <p className="text-text-secondary">
             В системе нет пользователей. Создайте первого пользователя с ролью OWNER.
           </p>
         </div>

@@ -33,8 +33,8 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold">Вход в систему</h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl font-bold text-text-primary">Вход в систему</h1>
+          <p className="text-text-secondary">
             Введите почту и пароль для доступа к умному дому
           </p>
         </div>

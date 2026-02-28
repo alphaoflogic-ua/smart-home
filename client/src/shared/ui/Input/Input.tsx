@@ -18,21 +18,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <Field className="w-full">
         {label && (
-          <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <Label className="block text-sm font-medium text-text-primary mb-1">
             {label}
           </Label>
         )}
         <HeadlessInput
           ref={ref}
           className={cn(
-            'flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-100',
-            error && 'border-red-500 data-[focus]:ring-red-500',
+            'flex h-10 w-full rounded-md border border-border-base bg-transparent px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none data-focus:ring-2 data-focus:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50',
+            error && 'border-red-500 data-focus:ring-red-500',
             className
           )}
           {...props}
         />
         {description && (
-          <Description className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <Description className="mt-1 text-xs text-text-secondary">
             {description}
           </Description>
         )}
