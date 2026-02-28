@@ -10,18 +10,33 @@ const SALT_ROUNDS = 10;
 /**
  * @param {string} email
  * @param {string} password
- * @param {'admin' | 'user'} [role]
+ * @param {'owner' | 'admin' | 'user'} [role]
  * @returns {Promise<User>}
  */
-export const register = async (email, password, role = 'user') => {
+export const register = async (email, password, role) => {
+  const usersCount = await getUsersCount();
+  
+  if (usersCount > 0) {
+    throw new Error('Registration is disabled');
+  }
+
+  const effectiveRole = usersCount === 0 ? 'owner' : (role || 'user');
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
   
   const result = await query(
     'INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING *',
-    [email, passwordHash, role]
+    [email, passwordHash, effectiveRole]
   );
   
   return result.rows[0];
+};
+
+/**
+ * @returns {Promise<number>}
+ */
+export const getUsersCount = async () => {
+  const result = await query('SELECT COUNT(*) FROM users');
+  return parseInt(result.rows[0].count, 10);
 };
 
 /**

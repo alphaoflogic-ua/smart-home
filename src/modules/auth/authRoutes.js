@@ -4,7 +4,6 @@ import * as authService from './authService.js';
 const RegisterSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-  role: z.enum(['admin', 'user']).optional(),
 });
 
 const LoginSchema = z.object({
@@ -20,19 +19,26 @@ const RefreshSchema = z.object({
  * @param {import('fastify').FastifyInstance} fastify
  */
 export const authRoutes = async (fastify) => {
+  fastify.get('/registration-status', async () => {
+    const count = await authService.getUsersCount();
+    return { isRegistrationOpen: count === 0 };
+  });
+
   fastify.post('/register', async (request, reply) => {
     const validated = RegisterSchema.parse(request.body);
     try {
       const user = await authService.register(
         validated.email,
-        validated.password,
-        validated.role
+        validated.password
       );
       const { password_hash, ...userWithoutPassword } = user;
       return userWithoutPassword;
     } catch (err) {
       if (/** @type {any} */ (err).code === '23505') {
         return reply.status(400).send({ message: 'User already exists' });
+      }
+      if (/** @type {Error} */ (err).message === 'Registration is disabled') {
+        return reply.status(403).send({ message: 'Registration is disabled' });
       }
       throw err;
     }
