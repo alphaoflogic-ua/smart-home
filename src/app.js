@@ -74,9 +74,9 @@ export const buildApp = (opts = {}) => {
   });
 
   // Register routes
-  app.register(authRoutes, { prefix: '/auth' });
-  app.register(devicesRoutes, { prefix: '/devices' });
-  app.register(otaRoutes, { prefix: '/ota' });
+  app.register(authRoutes, { prefix: '/api/auth' });
+  app.register(devicesRoutes, { prefix: '/api/devices' });
+  app.register(otaRoutes, { prefix: '/api/ota' });
 
   return app;
 };

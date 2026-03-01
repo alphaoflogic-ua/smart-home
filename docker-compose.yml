@@ -29,6 +29,7 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./uploads:/app/uploads
+      - frontend_static:/app/public
 
   postgres:
     image: postgres:16-alpine
@@ -76,8 +77,10 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/certs:/etc/nginx/certs
+      - frontend_static:/usr/share/nginx/html:ro
     depends_on:
       - backend
 
 volumes:
   postgres_data:
+  frontend_static:

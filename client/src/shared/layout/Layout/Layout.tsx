@@ -3,9 +3,9 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 
-export interface LayoutProps {
+export type LayoutProps = {
   children: ReactNode;
-}
+};
 
 export const Layout = ({ children }: LayoutProps) => {
   const { user } = useAuth();

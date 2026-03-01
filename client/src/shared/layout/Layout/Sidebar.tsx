@@ -2,20 +2,22 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Cpu, Settings, Activity } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useTranslation } from 'react-i18next';
 
 const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-const navigation = [
-  { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Devices', href: '/devices', icon: Cpu },
-  { name: 'Automations', href: '/automations', icon: Activity },
-  { name: 'Settings', href: '/settings', icon: Settings },
-];
-
 export const Sidebar = () => {
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const navigation = [
+    { name: t('navigation.dashboard'), href: '/', icon: Home },
+    { name: t('navigation.devices'), href: '/devices', icon: Cpu },
+    { name: t('navigation.automations'), href: '/automations', icon: Activity },
+    { name: t('navigation.settings'), href: '/settings', icon: Settings },
+  ];
 
   return (
     <aside className="w-64 border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">

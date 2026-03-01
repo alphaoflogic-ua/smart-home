@@ -21,7 +21,10 @@ const RefreshSchema = z.object({
 export const authRoutes = async (fastify) => {
   fastify.get('/registration-status', async () => {
     const count = await authService.getUsersCount();
-    return { isRegistrationOpen: count === 0 };
+    return { 
+      isRegistrationOpen: count === 0,
+      hasAdmin: count > 0 
+    };
   });
 
   fastify.post('/register', async (request, reply) => {
@@ -71,5 +74,13 @@ export const authRoutes = async (fastify) => {
     }
 
     return result;
+  });
+
+  fastify.post('/logout', async (request, reply) => {
+    const { refresh_token } = /** @type {any} */ (request.body || {});
+    if (refresh_token) {
+      await authService.revokeRefreshToken(refresh_token);
+    }
+    return reply.status(200).send({ message: 'Logged out successfully' });
   });
 };

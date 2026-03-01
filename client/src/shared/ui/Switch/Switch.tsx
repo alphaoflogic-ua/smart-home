@@ -6,12 +6,12 @@ const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export interface SwitchProps {
+export type SwitchProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
   className?: string;
   label?: string;
-}
+};
 
 export const Switch = ({ checked, onChange, className, label }: SwitchProps) => {
   return (

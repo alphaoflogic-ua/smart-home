@@ -1,0 +1,38 @@
+{
+  "auth": {
+    "login": {
+      "title": "Вхід у систему",
+      "subtitle": "Введіть пошту та пароль для доступу до розумного дому",
+      "email_label": "Email",
+      "email_placeholder": "name@example.com",
+      "password_label": "Пароль",
+      "password_placeholder": "••••••••",
+      "submit": "Увійти",
+      "submitting": "Вхід...",
+      "error_failed": "Не вдалося увійти. Перевірте дані."
+    },
+    "register": {
+      "title": "Створення адміністратора",
+      "subtitle": "У системі немає користувачів. Створіть першого користувача з роллю OWNER.",
+      "email_label": "Email",
+      "email_placeholder": "admin@example.com",
+      "password_label": "Пароль",
+      "confirm_password_label": "Підтвердження пароля",
+      "password_placeholder": "••••••••",
+      "submit": "Створити адміністратора",
+      "submitting": "Створення...",
+      "error_mismatch": "Паролі не збігаються",
+      "error_failed": "Не вдалося створити адміністратора."
+    }
+  },
+  "common": {
+    "logout": "Вийти",
+    "settings": "Налаштування"
+  },
+  "navigation": {
+    "dashboard": "Дашборд",
+    "devices": "Пристрої",
+    "automations": "Автоматизації",
+    "settings": "Налаштування"
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { Input } from '@/shared/ui/Input/Input';
 import { Button } from '@/shared/ui/Button/Button';
@@ -6,6 +7,7 @@ import { Card } from '@/shared/ui/Card/Card';
 import { useNavigate } from 'react-router-dom';
 
 export const CreateAdminForm = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,7 +22,7 @@ export const CreateAdminForm = () => {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError(t('auth.register.error_mismatch'));
       return;
     }
 
@@ -32,7 +34,7 @@ export const CreateAdminForm = () => {
       await login({ email, password });
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Не удалось создать администратора.');
+      setError(err.response?.data?.message || t('auth.register.error_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -42,9 +44,9 @@ export const CreateAdminForm = () => {
     <Card className="w-full max-w-md p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold text-text-primary">Создание администратора</h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('auth.register.title')}</h1>
           <p className="text-text-secondary">
-            В системе нет пользователей. Создайте первого пользователя с ролью OWNER.
+            {t('auth.register.subtitle')}
           </p>
         </div>
         
@@ -55,9 +57,9 @@ export const CreateAdminForm = () => {
         )}
 
         <Input
-          label="Email"
+          label={t('auth.register.email_label')}
           type="email"
-          placeholder="admin@example.com"
+          placeholder={t('auth.register.email_placeholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -65,9 +67,9 @@ export const CreateAdminForm = () => {
         />
 
         <Input
-          label="Пароль"
+          label={t('auth.register.password_label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={t('auth.register.password_placeholder')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -76,9 +78,9 @@ export const CreateAdminForm = () => {
         />
 
         <Input
-          label="Подтверждение пароля"
+          label={t('auth.register.confirm_password_label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={t('auth.register.password_placeholder')}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
@@ -91,7 +93,7 @@ export const CreateAdminForm = () => {
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? 'Создание...' : 'Создать администратора'}
+          {isLoading ? t('auth.register.submitting') : t('auth.register.submit')}
         </Button>
       </form>
     </Card>

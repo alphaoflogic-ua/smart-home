@@ -1,7 +1,7 @@
 import { LoginForm } from '@/features/auth/ui/LoginForm';
 import { CreateAdminForm } from '@/features/auth/ui/CreateAdminForm';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { ThemeToggle } from '@/shared/ui/ThemeToggle/ThemeToggle';
+import { LanguageSelector } from '@/features/language-switcher/ui/LanguageSelector';
 
 export const AuthPage = () => {
   const { hasAdmin, isLoading } = useAuth();
@@ -17,7 +17,7 @@ export const AuthPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-base p-4">
       <div className="absolute top-4 right-4">
-        <ThemeToggle />
+        <LanguageSelector />
       </div>
       {hasAdmin === false ? <CreateAdminForm /> : <LoginForm />}
     </div>

@@ -1,4 +1,4 @@
-export interface Automation {
+export type Automation = {
   id: string;
   home_id: string;
   name: string;
@@ -8,7 +8,7 @@ export interface Automation {
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
-}
+};
 
 export type AutomationTrigger = 
   | { type: 'device_state'; device_id: string; key: string }

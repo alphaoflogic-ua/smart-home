@@ -7,11 +7,11 @@ const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
+export type InputProps = React.ComponentPropsWithoutRef<'input'> & {
   label?: string;
   error?: string;
   description?: string;
-}
+};
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, description, ...props }, ref) => {

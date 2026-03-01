@@ -6,11 +6,11 @@ const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export interface CardProps {
+export type CardProps = {
   children: ReactNode;
   className?: string;
   title?: string;
-}
+};
 
 export const Card = ({ children, className, title }: CardProps) => {
   return (

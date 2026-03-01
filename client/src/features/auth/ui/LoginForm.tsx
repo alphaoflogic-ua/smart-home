@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { Input } from '@/shared/ui/Input/Input';
 import { Button } from '@/shared/ui/Button/Button';
@@ -6,6 +7,7 @@ import { Card } from '@/shared/ui/Card/Card';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export const LoginForm = () => {
       await login({ email, password });
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Не удалось войти. Проверьте данные.');
+      setError(err.response?.data?.message || t('auth.login.error_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -33,9 +35,9 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold text-text-primary">Вход в систему</h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('auth.login.title')}</h1>
           <p className="text-text-secondary">
-            Введите почту и пароль для доступа к умному дому
+            {t('auth.login.subtitle')}
           </p>
         </div>
         
@@ -46,9 +48,9 @@ export const LoginForm = () => {
         )}
 
         <Input
-          label="Email"
+          label={t('auth.login.email_label')}
           type="email"
-          placeholder="name@example.com"
+          placeholder={t('auth.login.email_placeholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -56,9 +58,9 @@ export const LoginForm = () => {
         />
 
         <Input
-          label="Пароль"
+          label={t('auth.login.password_label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={t('auth.login.password_placeholder')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -70,7 +72,7 @@ export const LoginForm = () => {
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? 'Вход...' : 'Войти'}
+          {isLoading ? t('auth.login.submitting') : t('auth.login.submit')}
         </Button>
       </form>
     </Card>
